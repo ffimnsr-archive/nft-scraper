@@ -1,3 +1,4 @@
+use crate::{db::Pool, errors::GenericResult};
 use postgres_types::ToSql;
 use super::Parameter;
 
@@ -10,7 +11,7 @@ pub(crate) struct NftFileInformation {
 }
 
 impl<'a> NftFileInformation {
-    pub fn parameters(&'a self) -> Vec<Parameter<'a>> {
+    fn parameters(&'a self) -> Vec<Parameter<'a>> {
         let params: Vec<Parameter<'a>> = vec![
             &self.nft_data_id,
             &self.height,
@@ -19,5 +20,22 @@ impl<'a> NftFileInformation {
         ];
 
         params
+    }
+
+    pub async fn save(&self, pool: &Pool) -> GenericResult<()> {
+        let db = pool.get().await.map_err(|e| e.to_string())?;
+
+        let query = String::from(
+            "INSERT INTO nft_file_information \
+                (nft_data_id, height, width, file_size) \
+            VALUES ($1, $2, $3, $4) \
+            RETURNING *",
+        );
+
+        db.query_one(&query, &self.parameters())
+            .await
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 }
