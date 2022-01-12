@@ -1,0 +1,10 @@
+.cargo
+benches
+examples
+target
+tests
+*.log
+*.code-workspace
+.git
+README.md
+docker-compose.yaml
