@@ -103,6 +103,7 @@ dependencies = [
  "libc",
  "num-integer",
  "num-traits",
+ "serde",
  "winapi",
 ]
 
@@ -686,6 +687,7 @@ dependencies = [
  "tracing-attributes",
  "tracing-futures",
  "tracing-subscriber",
+ "url",
  "uuid",
 ]
 
@@ -1492,6 +1494,7 @@ dependencies = [
  "idna",
  "matches",
  "percent-encoding",
+ "serde",
 ]
 
 [[package]]
